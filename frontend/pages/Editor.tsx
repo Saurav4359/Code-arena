@@ -1,16 +1,10 @@
 import Editor from "@monaco-editor/react";
-export function CodeEditor({
-  language,
-}: {
-  language: string;
-    
-}) {
- 
- const path ={ 
-    javascript : "// write javascript",
-    java : "// write java code",
-    cpp :  "// C++ code"
-  }
+export function CodeEditor({ language }: { language: string }) {
+  const path = {
+    javascript: "// write javascript",
+    java: "// write java code",
+    cpp: "// C++ code",
+  };
   return (
     <Editor
       key={language}
