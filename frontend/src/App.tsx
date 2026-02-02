@@ -1,8 +1,9 @@
 import "./App.css";
 // import { CodeEditor } from "../pages/Editor";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
- import {Home} from "../pages"
-import {Signup} from "../Components/Signup";
+import { Layout } from "../pages/Layout";
+import { Signup } from "../Components/Signup";
+import {Section} from "../Components/section"
 // import { useRef, useState } from "react";
 
 function App() {
@@ -10,10 +11,13 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Home/>}/> 
-          <Signup/>
+          <Route path="/" element={<Layout/>}> 
+          <Route index element={<Section/>} />
+          <Route path="/signup" element={<Signup />} />
+          </Route>  
         </Routes>
       </BrowserRouter>
+       
     </>
   );
 }

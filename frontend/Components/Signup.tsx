@@ -11,10 +11,9 @@ export function Signup() {
   }
   return (
     <>
-      <div className=" h-screen w-screen flex justify-center items-center opacity-90 ">
-        <div className="bg-gray-100 h-150 w-180 rounded-2xl p-2 border-solid border-black/60 border ">
-          <div className=" h-48 border-black">
-            <div className="h-11 w-full flex justify-between items-center">
+        <div className="bg-gray-200 h-150 w-180 rounded-2xl p-2 border-solid border-black/60 border  ">
+          <div className=" h-48 border-black ">
+            <div className="h-11 w-full flex justify-between items-center ">
               <div className="font-serif text-xl  h-10 w-50 flex justify-center items-center ml-10 pointer-events-none ">
                 My Acccount
               </div>
@@ -111,7 +110,6 @@ export function Signup() {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 }

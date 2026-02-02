@@ -1,11 +1,11 @@
 import { NavBar } from "../Components/header";
-import { Section } from "../Components/section";
 import { Footer } from "../Components/Footer";
-export function Home() {
+import { Outlet } from "react-router";
+export function Layout() {
   return (
     <>
       <NavBar />
-      <Section />
+      <Outlet/>
       <Footer />
     </>
   );
