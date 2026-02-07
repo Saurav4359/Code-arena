@@ -17,6 +17,7 @@ import type { AdminReq } from "../Middlewares/AuthMiddleware";
 import { UploadTest } from "../modules/Supabase/uploadFile";
 import { submitCode } from "../modules/judge/execution";
 import { AddQueue } from "../modules/queue/queue";
+import { DownloadFile } from "../modules/Supabase/downloadFile";
 
 export const Signup = async (req: Request, res: Response) => {
   const { success, data, error } = signup.safeParse(req.body);
@@ -244,8 +245,8 @@ export const submission = async (req: Request, res: Response) => {
       problemId: problemId,
     });
     res.json({
-      message : "Code Submitted"
-    })
+      message: "Code Submitted",
+    });
   } catch (e) {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -253,4 +254,68 @@ export const submission = async (req: Request, res: Response) => {
 
 export const submission_result = async (req: Request, res: Response) => {};
 
+export const getProblemDetails = async (req: Request, res: Response) => {
+  try {
+    const data = await prisma.problem.findMany({
+      select: {
+        title: true,
+        tags: true,
+        difficulty: true,
+        id: true,
+      },
+    });
+    if (!data) {
+      res.status(404).json({
+        status: false,
+        error: "Problems Not found",
+      });
+    }
+    res.status(200).send(data);
+  } catch (e) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
+export const getProblemDescription = async (req: Request, res: Response) => {
+  const problemId = req.params.problemId;
+  try {
+    const data = await prisma.problem.findFirst({
+      where: {
+        id: problemId as string,
+      },
+      include: {
+        visible_testcases: true,
+      },
+    });
+    if (!data) {
+      return res.status(400).json({
+        success: false,
+        error: "Problem Not found",
+      });
+    }
+    const testcased =await Promise.all(data?.visible_testcases.map(async(test) => ( 
+         {
+          input : await DownloadFile(test.inputPath),
+          output : await DownloadFile(test.outputPath)
+         }
+    )));  // this map function has async callback , so it gives us array of promise thats why we are awaiting and using promise.all to finish all of them  and give final result
+    
+
+    res.status(200).send({
+      id: data?.id,
+      title: data?.title,
+      description: data?.description,
+      difficulty: data?.difficulty,
+      tags: data?.tags,
+      timeLimit: data?.timeLimit,
+      memoryLimit: data?.memoryLimit,
+      test: testcased
+       
+    
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: "Internal Server Error ",
+    });
+  }
+};

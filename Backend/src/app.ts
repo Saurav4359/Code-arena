@@ -1,7 +1,10 @@
 import express from "express";
 import { runServer } from "./server";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import {
+  getProblemDescription,
+  getProblemDetails,
   hiddenTestcases,
   Problems,
   Signin,
@@ -12,12 +15,16 @@ import {
 import { logout } from "./auth/logout";
 import { AuthMiddleware } from "./Middlewares/AuthMiddleware";
 import { AdminCheck } from "./Middlewares/AdminCheck";
-
 const app = express();
+
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ origin: ["http://localhost:5174", "http://localhost:5173"] }));
+
 const router = express.Router();
+
 app.use("/auth", router);
+
 router.post("/signup", Signup);
 router.post("/login", Signin);
 router.post("/logout", logout);
@@ -37,4 +44,9 @@ router.post(
   hiddenTestcases,
 );
 router.post("/submission/:problemId", AuthMiddleware, submission);
+
+app.use("/get", router);
+router.get("/problems", getProblemDetails);
+router.get("/getProblemDescription/:problemId",getProblemDescription);
 runServer(app);
+
