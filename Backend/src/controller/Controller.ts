@@ -18,6 +18,7 @@ import { UploadTest } from "../modules/Supabase/uploadFile";
 import { submitCode } from "../modules/judge/execution";
 import { AddQueue } from "../modules/queue/queue";
 import { DownloadFile } from "../modules/Supabase/downloadFile";
+import { log } from "console";
 
 export const Signup = async (req: Request, res: Response) => {
   const { success, data, error } = signup.safeParse(req.body);
@@ -227,16 +228,28 @@ export const hiddenTestcases = async (req: Request, res: Response) => {
   }
 };
 
+const lang: Record<string, string> = {
+  "91": "java",
+  "102": "javascript",
+  "110": "C",
+  "105": "CPP",
+};
+
 export const submission = async (req: Request, res: Response) => {
+  console.log("1")
   const problemId = <string>req.params.problemId; // or as string
   const { success, data, error } = submissiontype.safeParse(req.body);
   if (!success) {
-    return res.status(400).json({
+  console.log("2")
+    res.status(400).json({
       success: false,
       error: "Invalid Input",
     });
+    console.log(error.message)
+    return;
   }
   try {
+  
     await AddQueue({
       userId: (req as AdminReq).id,
       language_id: data.language_id,
@@ -244,11 +257,24 @@ export const submission = async (req: Request, res: Response) => {
       source_code: data.code,
       problemId: problemId,
     });
+    
+
+    await prisma.submission.create({
+      data: {
+        language:  lang[data.language_id] as string,
+        memory: data.memory,
+        runtime: data.runtime,
+        sourceCode: data.code,
+        problemId: problemId,
+        userId: (req as AdminReq).id,
+      },
+    });
+     console.log("code submit");
     res.json({
       message: "Code Submitted",
     });
   } catch (e) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" + e });
   }
 };
 
@@ -293,25 +319,21 @@ export const getProblemDescription = async (req: Request, res: Response) => {
         error: "Problem Not found",
       });
     }
-    const testcased =await Promise.all(data?.visible_testcases.map(async(test) => ( 
-         {
-          input : await DownloadFile(test.inputPath),
-          output : await DownloadFile(test.outputPath)
-         }
-    )));  // this map function has async callback , so it gives us array of promise thats why we are awaiting and using promise.all to finish all of them  and give final result
-    
+    const testcased = await Promise.all(
+      data?.visible_testcases.map(async (test) => ({
+        input: await DownloadFile(test.inputPath),
+        output: await DownloadFile(test.outputPath),
+      })),
+    ); // this map function has async callback , so it gives us array of promise thats why we are awaiting and using promise.all to finish all of them  and give final result
 
     res.status(200).send({
-      id: data?.id,
       title: data?.title,
       description: data?.description,
       difficulty: data?.difficulty,
       tags: data?.tags,
       timeLimit: data?.timeLimit,
       memoryLimit: data?.memoryLimit,
-      test: testcased
-       
-    
+      test: testcased,
     });
   } catch (e) {
     res.status(500).json({

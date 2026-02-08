@@ -19,7 +19,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ["http://localhost:5174", "http://localhost:5173"] }));
+app.use(cors({ origin: ["http://localhost:5174", "http://localhost:5173"] , credentials :true}));
+
 
 const router = express.Router();
 
@@ -47,6 +48,5 @@ router.post("/submission/:problemId", AuthMiddleware, submission);
 
 app.use("/get", router);
 router.get("/problems", getProblemDetails);
-router.get("/getProblemDescription/:problemId",getProblemDescription);
+router.get("/getProblemDescription/:problemId", getProblemDescription);
 runServer(app);
-

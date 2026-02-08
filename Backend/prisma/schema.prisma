@@ -84,20 +84,16 @@ enum STATUS {
   TLE
   RE
 }
-enum LANGUAGE {
-  java 
-  cpp
-  python
-}
+ 
 model submission {
   id String @id @default(uuid())
   user user @relation(fields: [userId],references: [id])
   userId String
   problem problem @relation(fields: [problemId],references: [id])
   problemId String
-  language LANGUAGE
+  language String
   sourceCode String
-  status STATUS @default(PENDING)
+  status STATUS? @default(PENDING)
   runtime Int?
   memory Int?
   createdAt DateTime @default(now())

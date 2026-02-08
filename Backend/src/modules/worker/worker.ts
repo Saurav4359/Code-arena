@@ -3,6 +3,7 @@ import { AddQueue } from "../queue/queue";
 import { getResult, submitCode } from "../judge/execution";
 import { GetHiddenTest, GetVisibleTest } from "../../utils/services";
 import { DownloadFile } from "../Supabase/downloadFile";
+import { pushWorkerUpdate } from "../../server";
 
 const worker = new Worker(
   "Code",
@@ -14,23 +15,28 @@ const worker = new Worker(
     const VisibleTestCase = await GetVisibleTest(data.problemId);
     console.log(HiddenTestCase);
     console.log(VisibleTestCase);
-
+    // pushWorkerUpdate(data.userId, `Test ${testcasePassed} passed`);
     for (const test of VisibleTestCase) {
       const input = await DownloadFile(test.inputPath);
       const output = await DownloadFile(test.outputPath);
       data.stdin = input;
       const token = await submitCode(data);
       let result = await getResult(token);
-      if (result.status.description === "Processing") {
+      console.log(result);
+      while (result.status.description === "Processing") {
         result = await getResult(token);
+        console.log(result);
       }
-         console.log(JSON.stringify(output));
+      console.log(JSON.stringify(output));
       console.log(JSON.stringify(result.stdout));
       if (output === result.stdout.trim()) {
         testcasePassed++;
-      }
-      else {
-        console.log("helo")
+        // pushWorkerUpdate(data.userId, `Test ${testcasePassed} passed`);
+      } else {
+        // pushWorkerUpdate(
+        //   data.userId,
+        //   `Testcase failed at ${testcasePassed + 1}`,
+        // );
         console.log("testCase failed At ", testcasePassed);
         return `testCase failed At ${testcasePassed}`;
       }
@@ -40,21 +46,29 @@ const worker = new Worker(
       const output = await DownloadFile(test.outputPath);
       data.stdin = input;
       const token = await submitCode(data);
+      console.log(token);
+      console.log("hel");
       let result = await getResult(token);
-      if (result.status.description === "Processing") {
+      while (result.status.description === "Processing") {
         result = await getResult(token);
       }
-       
-       console.log(JSON.stringify(output));
+
+      console.log(JSON.stringify(output));
       console.log(JSON.stringify(result.stdout));
-      if (output === result.stdout.trim()) testcasePassed++;
-      else {
+
+      if (output === result.stdout.trim()) {
+        testcasePassed++;
+        // pushWorkerUpdate(data.userId, `Test ${testcasePassed} passed`);
+      } else {
+        // pushWorkerUpdate(
+        //   data.userId,
+        //   `Testcase failed at ${testcasePassed + 1}`,
+        // );
         console.log("testCase failed At ", testcasePassed);
         return `testCase failed At ${testcasePassed}`;
       }
+      console.log(result);
     }
-
-    // await AddQueue(data);
     return console.log("TestCase passed : ", testcasePassed);
   },
   {
@@ -64,11 +78,3 @@ const worker = new Worker(
     },
   },
 );
-
-// worker.on("completed", async (job, result)=> {
-//   console.log(job);
-// })
-
-// worker.on("failed", async (Job, result )=> {
-//   console.log(Job);
-// })

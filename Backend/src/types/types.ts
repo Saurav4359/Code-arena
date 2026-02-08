@@ -1,4 +1,4 @@
-import z from "zod";
+import z, { string } from "zod";
 
 export const signup = z.object({
   name: z.string(),
@@ -30,5 +30,8 @@ export const testcases = z.object({
 export const submissiontype=z.object({
     language_id : z.string(),
     code : z.string(),
+    memory : z.number(),
+    runtime : z.number(),
+     
 })
 
