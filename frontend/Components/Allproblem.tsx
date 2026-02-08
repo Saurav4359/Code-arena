@@ -27,8 +27,8 @@ export function Problem() {
     <>
       <div className="  h-screen w-full">
         <div className="bg-gray-900/60 h-min mt-25 mx-5 border border-white/40 rounded-2xl flex-wrap p-2">
-          <div className=" mt-2 h-10 w-80 mx-20 flex justify-center items-center mb-3">
-            <span className=" absolute mr-55 mt-0.5">
+          <div className=" mt-2 h-10 w-150 mx-20 flex justify-around items-center mb-3  ">
+            <span className=" absolute mr-110 mt-0.5">
               <Search />
             </span>
             <input
@@ -36,7 +36,15 @@ export function Problem() {
               placeholder="Search"
               className="h-8 w-65 px-8 rounded-3xl focus:outline-black border border-white/40 text-white"
             />
+            <Link to="/addProblem">
+              
+              <button className="bg-red-500/70 h-8 w-28 rounded-xl hover:h-9 border border-white/50 ">
+                
+                Add questions
+              </button>
+            </Link>
           </div>
+
           <div className="grid justify-center gap-3">
             {problems.map((problem, index) => (
               <Link to={`/submission/${problem.id}`}>

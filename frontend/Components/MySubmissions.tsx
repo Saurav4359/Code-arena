@@ -1,15 +1,6 @@
 import { useEffect, useState } from "react";
 import { MySolutionBar } from "../Components/Mysolution";
 import axios from "axios";
-
-//   when: string;
-//     who : name;
-//   problem: title;
-//   lang: string;
-//   status: string;
-//   time: number;
-//   memory: number;
-
 export interface Submissiontype {
   language: string;
   status: string;
