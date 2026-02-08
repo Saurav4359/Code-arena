@@ -18,7 +18,6 @@ import { UploadTest } from "../modules/Supabase/uploadFile";
 import { submitCode } from "../modules/judge/execution";
 import { AddQueue } from "../modules/queue/queue";
 import { DownloadFile } from "../modules/Supabase/downloadFile";
-import { log } from "console";
 
 export const Signup = async (req: Request, res: Response) => {
   const { success, data, error } = signup.safeParse(req.body);
@@ -236,20 +235,19 @@ const lang: Record<string, string> = {
 };
 
 export const submission = async (req: Request, res: Response) => {
-  console.log("1")
+  console.log("1");
   const problemId = <string>req.params.problemId; // or as string
   const { success, data, error } = submissiontype.safeParse(req.body);
   if (!success) {
-  console.log("2")
+    console.log("2");
     res.status(400).json({
       success: false,
       error: "Invalid Input",
     });
-    console.log(error.message)
+    console.log(error.message);
     return;
   }
   try {
-  
     await AddQueue({
       userId: (req as AdminReq).id,
       language_id: data.language_id,
@@ -257,11 +255,10 @@ export const submission = async (req: Request, res: Response) => {
       source_code: data.code,
       problemId: problemId,
     });
-    
 
-    await prisma.submission.create({
+    const sub = await prisma.submission.create({
       data: {
-        language:  lang[data.language_id] as string,
+        language: lang[data.language_id] as string,
         memory: data.memory,
         runtime: data.runtime,
         sourceCode: data.code,
@@ -269,8 +266,9 @@ export const submission = async (req: Request, res: Response) => {
         userId: (req as AdminReq).id,
       },
     });
-     console.log("code submit");
+    console.log("code submit");
     res.json({
+      submissionId: sub.id,
       message: "Code Submitted",
     });
   } catch (e) {
@@ -338,6 +336,46 @@ export const getProblemDescription = async (req: Request, res: Response) => {
   } catch (e) {
     res.status(500).json({
       error: "Internal Server Error ",
+    });
+  }
+};
+
+export const getMySubmission = async (req: Request, res: Response) => {
+  const userId = (req as AdminReq).id;
+  console.log("HIi");
+  try {
+    const data = await prisma.submission.findMany({
+      where: {
+        userId: userId,
+        
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        problem: {
+          select: {
+            title: true,
+          },
+        },
+      },
+      omit: {
+         
+        sourceCode : true,
+        userId :true,
+        problemId :true,
+        id :true,
+
+      }
+    });
+    console.log(2);
+    console.log(data);
+    res.send(data);
+  } catch (e) {
+    res.status(500).json({
+      error: "Internal Server Error",
     });
   }
 };

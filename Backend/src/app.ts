@@ -3,6 +3,7 @@ import { runServer } from "./server";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import {
+  getMySubmission,
   getProblemDescription,
   getProblemDetails,
   hiddenTestcases,
@@ -49,4 +50,5 @@ router.post("/submission/:problemId", AuthMiddleware, submission);
 app.use("/get", router);
 router.get("/problems", getProblemDetails);
 router.get("/getProblemDescription/:problemId", getProblemDescription);
+router.get("/getMySubmission",AuthMiddleware, getMySubmission);
 runServer(app);
