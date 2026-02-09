@@ -44,7 +44,7 @@ export function AddProblem() {
                 })
                  
                   console.log(result.data.problemId);
-                  navigate(`/addTestcases${result.data.problemId}`);
+                  navigate(`/addTestcases/${result.data.problemId}`);
             }
             update()
  

@@ -6,9 +6,8 @@ import { Problem } from "../Components/Allproblem";
 import { Submission } from "../Components/Submission";
 import { Contest } from "../pages/contest";
 import { MySubmission } from "../Components/MySubmissions";
-import {AddProblem} from "../pages/AddProblem";
-
-
+import { AddProblem } from "../pages/AddProblem";
+import { AddTestCases } from "../pages/AddTestCases";
 
 function App() {
   return (
@@ -21,7 +20,11 @@ function App() {
             <Route path="/signup" element={<Auth />} />
             <Route path="/submission/:problemId" element={<Submission />} />
             <Route path="/mySubmissions" element={<MySubmission />} />
-            <Route path="/addProblem" element={<AddProblem/>}/>
+            <Route path="/addProblem/" element={<AddProblem />} />
+            <Route
+              path="/addTestcases/:newProblemId"
+              element={<AddTestCases />}
+            />
             <Route path="/contest" element={<Contest />} />
           </Route>
         </Routes>
