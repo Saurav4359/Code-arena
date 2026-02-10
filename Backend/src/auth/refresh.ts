@@ -38,7 +38,7 @@ export const refreshToken= async (req :Request,res :Response)=> {
      res.cookie("refresh", newRefres, {
         httpOnly: true,
         sameSite : "none",
-        secure : true,
+        secure : false,
         maxAge: 7*24 *3600*1000
      })
 

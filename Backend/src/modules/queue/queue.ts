@@ -18,3 +18,4 @@ export async function AddQueue(data: job) {
   console.log("Job added to queue");
   await queue.close();
 }
+

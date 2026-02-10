@@ -7,9 +7,6 @@ CREATE TYPE "DIFFICULTY" AS ENUM ('EASY', 'MEDIUM', 'HARD');
 -- CreateEnum
 CREATE TYPE "STATUS" AS ENUM ('PENDING', 'RUNNING', 'AC', 'WA', 'TLE', 'RE');
 
--- CreateEnum
-CREATE TYPE "LANGUAGE" AS ENUM ('java', 'cpp', 'python');
-
 -- CreateTable
 CREATE TABLE "user" (
     "id" TEXT NOT NULL,
@@ -75,9 +72,9 @@ CREATE TABLE "submission" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "problemId" TEXT NOT NULL,
-    "language" "LANGUAGE" NOT NULL,
-    "codePath" TEXT NOT NULL,
-    "status" "STATUS" NOT NULL DEFAULT 'PENDING',
+    "language" TEXT NOT NULL,
+    "sourceCode" TEXT NOT NULL,
+    "status" "STATUS" DEFAULT 'PENDING',
     "runtime" INTEGER,
     "memory" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -106,14 +106,16 @@ export const Signin = async (req: Request, res: Response) => {
     });
     res.cookie("refresh", refresh, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: "none",
       path: "/",
       maxAge: 7 * 24 * 3600 * 1000,
     });
     res.status(201).json({
       success: true,
-      token: accessToken,
+      accessToken: accessToken,
+      name : user.name,
+      role : user.role
     });
   } catch (e) {
     res.status(500).json({
@@ -234,11 +236,11 @@ const lang: Record<string, string> = {
 };
 
 export const submission = async (req: Request, res: Response) => {
-  console.log("1");
+   
   const problemId = <string>req.params.problemId; // or as string
   const { success, data, error } = submissiontype.safeParse(req.body);
   if (!success) {
-    console.log("2");
+   
     res.status(400).json({
       success: false,
       error: "Invalid Input",
@@ -246,7 +248,9 @@ export const submission = async (req: Request, res: Response) => {
     console.log(error.message);
     return;
   }
+     
   try {
+ 
     await AddQueue({
       userId: (req as AdminReq).id,
       language_id: data.language_id,
@@ -254,7 +258,7 @@ export const submission = async (req: Request, res: Response) => {
       source_code: data.code,
       problemId: problemId,
     });
-
+     
     const sub = await prisma.submission.create({
       data: {
         language: lang[data.language_id] as string,
