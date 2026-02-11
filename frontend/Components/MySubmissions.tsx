@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { MySolutionBar } from "../Components/Mysolution";
 import axios from "axios";
+import { getAccessToken } from "../Auth/Tokens";
+import { BACKEND_URL } from "../Auth/role";
 export interface Submissiontype {
   language: string;
   status: string;
@@ -20,10 +22,10 @@ export function MySubmission() {
   useEffect(() => {
     async function getSubmission() {
       const result = await axios.get(
-        "http://localhost:3000/get/getMySubmission",
+        `${BACKEND_URL}/get/getMySubmission`,
         {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMDI2NGYzOC03Mzk2LTQ5NGUtOTRjZS0yNDY1NGJhZDAwOGEiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzA1ODA5NTQsImV4cCI6MTc3MDU4Mzk1NH0.S63WOixoQEOJQT2sFuCC0Tbcp2q6-W1KAAA2_xRKbKo`,
+            Authorization: `Bearer ${getAccessToken()}`,
           },
         },
       );

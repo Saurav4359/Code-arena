@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useRef } from "react";
 import { useParams } from "react-router";
+import { getAccessToken } from "../Auth/Tokens";
+import { BACKEND_URL } from "../Auth/role";
 
 export function AddTestCases() {
   const { newProblemId } = useParams();
@@ -17,16 +19,16 @@ export function AddTestCases() {
     console.log(Output);
     async function addtest() {
       const result = await axios.post(
-        `http://localhost:3000/submit/visibletestcase/${newProblemId}`,
+        `${BACKEND_URL}/submit/visibletestcase/${newProblemId}`,
         {
-          input: Input,
-          output: Output,
+          input: (Input),
+          output: (Output),
         },
         {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMDI2NGYzOC03Mzk2LTQ5NGUtOTRjZS0yNDY1NGJhZDAwOGEiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzA1OTU4MjQsImV4cCI6MTc3MDU5ODgyNH0.8b2HgswXmNgI-txunYwjk2lEo5GKPNAPfEtVkYrYVeU`,
+            Authorization: `Bearer ${getAccessToken()}`,
           },
         },
       );
@@ -42,7 +44,7 @@ export function AddTestCases() {
     if (!Input || !Output) alert("VisibleTest Box is empty");
     async function addtest() {
       const result = await axios.post(
-        `http://localhost:3000/submit/hiddentestcase/${newProblemId}`,
+        `${BACKEND_URL}/submit/hiddentestcase/${newProblemId}`,
         {
           input: Input,
           output: Output,
@@ -51,7 +53,7 @@ export function AddTestCases() {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMDI2NGYzOC03Mzk2LTQ5NGUtOTRjZS0yNDY1NGJhZDAwOGEiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzA1OTU4MjQsImV4cCI6MTc3MDU5ODgyNH0.8b2HgswXmNgI-txunYwjk2lEo5GKPNAPfEtVkYrYVeU`,
+            Authorization: `Bearer ${getAccessToken()}`,
           },
         },
       );

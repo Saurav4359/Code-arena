@@ -36,7 +36,7 @@ export function ProblemBar({ index, title, difficulty, tags }: probDetails) {
             </div>
           </div>
           <div className=" h-8 w-60 flex justify-center items-center">
-            {tags.map((value, index) => value + ",")}
+            {tags.map((value) => value + ",")}
           </div>
         </div>
       </div>

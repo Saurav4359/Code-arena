@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { getAccessToken } from "../Auth/Tokens";
+import { BACKEND_URL } from "../Auth/role";
 
 
 export function AddProblem() {
@@ -27,7 +29,7 @@ export function AddProblem() {
       console.log(description ,title ,memory ,time ,arrTags,);
        
             async function update() {
-                const result = await axios.post("http://localhost:3000/submit/problem",{
+                const result = await axios.post(`${BACKEND_URL}/submit/problem`,{
                     "title" : title,
                     "description" : description,
                     "difficulty" : difficulty,
@@ -36,8 +38,7 @@ export function AddProblem() {
                     "memoryLimit" : Number(memory)
                 }, {
                     headers :{
-                        Authorization : `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMDI2NGYzOC03Mzk2LTQ5NGUtOTRjZS0yNDY1NGJhZDAwOGEiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzA1OTA1OTksImV4cCI6MTc3MDU5MzU5OX0.hch0U4wHadJ2BQdgr_PQIiwqvq9f-msaXk8INgUDu2k`,
-                        "Accept" : "application/json",
+                        Authorization : `Bearer ${getAccessToken()}`,
                         "Content-Type" : "application/json"
                     }
  

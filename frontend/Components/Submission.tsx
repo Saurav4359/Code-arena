@@ -4,6 +4,8 @@ import { CodeEditor } from "../pages/Editor";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getAccessToken } from "../Auth/Tokens";
+import { BACKEND_URL } from "../Auth/role";
 export interface test {
   input: string;
   output: string;
@@ -37,7 +39,7 @@ export function Submission() {
   useEffect(() => {
     async function getResult() {
       const result = await axios.get(
-        `http://localhost:3000/get/getProblemDescription/${problemId}`,
+        `${BACKEND_URL}/get/getProblemDescription/${problemId}`,
       );
       setData(result.data);
     }
@@ -51,26 +53,28 @@ export function Submission() {
       return;
     }
     try {
+      console.log(1);
       async function submit() {
+        console.log(2);
         const result = await axios.post(
-          `http://localhost:3000/submit/submission/${problemId}`,
-          JSON.stringify({
+          `${BACKEND_URL}/submit/submission/${problemId}`,
+           {
             language_id: `${languageId[ref]}`,
-            code: sourceCode,
+            code:  (sourceCode),
             memory: data?.memoryLimit,
             runtime: data?.timeLimit,
-          }),
+          },
           {
             withCredentials: true,
             headers: {
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMDI2NGYzOC03Mzk2LTQ5NGUtOTRjZS0yNDY1NGJhZDAwOGEiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzA1NjQ4MzUsImV4cCI6MTc3MDU2NzgzNX0.jzzNfUcphF1iWYYVNGx2ES12wu47t-YchFcPGGOGwvo",
+              Authorization: `Bearer ${getAccessToken()}`,
               "Content-Type": "application/json",
               Accept: "application/json",
             },
           },
         );
-        
+        console.log(3);
+
         console.table(result.data);
       }
       submit();

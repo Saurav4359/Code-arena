@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { clearAccessToken, getAccessToken } from "../Auth/Tokens";
+import { clearRole } from "../Auth/role";
 
 export function NavBar() {
   return (
@@ -27,11 +29,26 @@ export function NavBar() {
             Contests
           </div>
         </Link>
-        <Link to="/signup">
-          <div className="text-l font-medium hover:cursor-pointer h-8 w-20 rounded-2xl flex justify-center items-center hover:bg-black hover:text-white hover:transition delay-75 duration-100 ease-in">
-            SignIn
-          </div>
-        </Link>
+        {!getAccessToken() ? (
+          <Link to="/login">
+            <div className="text-l font-medium hover:cursor-pointer h-8 w-20 rounded-2xl flex justify-center items-center hover:bg-black hover:text-white hover:transition delay-75 duration-100 ease-in">
+              SignIn
+            </div>
+          </Link>
+        ) : (
+          <Link to="/">
+            <div
+              onClick={() => {
+                clearAccessToken();
+                clearRole()
+                window.location.reload();
+              }}
+              className="text-l font-medium hover:cursor-pointer h-8 w-20 rounded-2xl flex justify-center items-center hover:bg-black hover:text-white hover:transition delay-75 duration-100 ease-in"
+            >
+              Logout
+            </div>
+          </Link>
+        )}
       </div>
     </header>
   );
