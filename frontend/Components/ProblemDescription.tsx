@@ -1,5 +1,5 @@
 import { Example } from "../Components/Example";
-import type { probDetails, test } from "./Submission";
+import type { probDetails, test } from "../pages/Submission";
 export function ProblemDescription({
   title,
   memoryLimit,
@@ -16,12 +16,8 @@ export function ProblemDescription({
           <div className="  min-w-50 h-14 flex justify-center items-start text-4xl font-bold">
             {title}
           </div>
-          <div className="  h-6 min-w-50">
-            MemoryLimit : {memoryLimit}
-          </div>
-          <div className=" h-6 min-w-50">
-            TimeLimit : {timeLimit}
-          </div>
+          <div className="  h-6 min-w-50">MemoryLimit : {memoryLimit}</div>
+          <div className=" h-6 min-w-50">TimeLimit : {timeLimit}</div>
         </div>
         <div className=" w-195 min-h mt-1 ">
           <div className="h-8   w-190 flex justify-start items-center gap-5 ml-3">
@@ -45,8 +41,7 @@ export function ProblemDescription({
             </div>
           </div>
           <p className="w-190 mt-5 ml-3 font-medium p-2 text-balance whitespace-break-spaces text-xl border border-white/40 rounded min-h ">
-            {description}  
-
+            {description}
           </p>
         </div>
 

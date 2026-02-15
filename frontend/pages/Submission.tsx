@@ -1,6 +1,6 @@
 import { Option } from "../Components/options";
 import { ProblemDescription } from "../Components/ProblemDescription";
-import { CodeEditor } from "../pages/Editor";
+import { CodeEditor } from "../Components/Editor";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";

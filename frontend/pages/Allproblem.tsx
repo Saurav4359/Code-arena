@@ -1,5 +1,5 @@
 import { Search } from "../icons/search";
-import { ProblemBar } from "./Problembar";
+import { ProblemBar } from "../Components/Problembar";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";

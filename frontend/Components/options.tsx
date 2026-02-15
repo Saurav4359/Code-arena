@@ -1,9 +1,11 @@
 import { useRef } from "react";
-import type { langtype } from "./Submission";
+import type { langtype } from "../pages/Submission";
 type Props = {
-  setRef: React.Dispatch<React.SetStateAction<"java" | "javascript" | "c" | "cpp">>;
+  setRef: React.Dispatch<
+    React.SetStateAction<"java" | "javascript" | "c" | "cpp">
+  >;
 };
-export function Option({ setRef }: Props ) {
+export function Option({ setRef }: Props) {
   const langRef = useRef<HTMLSelectElement | null>(null);
   if (langRef.current) setRef(langRef.current.value as langtype);
   return (

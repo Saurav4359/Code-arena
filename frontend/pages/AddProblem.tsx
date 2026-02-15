@@ -1,9 +1,8 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router";
 import { getAccessToken } from "../Auth/Tokens";
 import { BACKEND_URL } from "../Auth/role";
-
 
 export function AddProblem() {
   const titleRef = useRef<HTMLTextAreaElement>(null);
@@ -13,8 +12,8 @@ export function AddProblem() {
   const timeRef = useRef<HTMLTextAreaElement>(null);
   const difficultyRef = useRef<HTMLTextAreaElement>(null);
   const tagsRef = useRef<HTMLTextAreaElement>(null);
-//   const [newProbId,setNewProbId] = useState("");
-  const navigate =useNavigate();
+
+  const navigate = useNavigate();
   function probAdd() {
     const title = titleRef.current?.value;
     const description = descriptionRef.current?.value;
@@ -22,34 +21,35 @@ export function AddProblem() {
     const time = timeRef.current?.value;
     const difficulty = difficultyRef.current?.value;
     const tags = tagsRef.current?.value;
-    const arrTags= tags?.split(',')
-      if(!title || !description || !memory || !time || !difficulty || !tags){
-        alert("Fill all the details");
-      }
-      console.log(description ,title ,memory ,time ,arrTags,);
-       
-            async function update() {
-                const result = await axios.post(`${BACKEND_URL}/submit/problem`,{
-                    "title" : title,
-                    "description" : description,
-                    "difficulty" : difficulty,
-                    "tags" : arrTags,
-                    "timeLimit" : Number(time),
-                    "memoryLimit" : Number(memory)
-                }, {
-                    headers :{
-                        Authorization : `Bearer ${getAccessToken()}`,
-                        "Content-Type" : "application/json"
-                    }
- 
-                })
-                 
-                  console.log(result.data.problemId);
-                  navigate(`/addTestcases/${result.data.problemId}`);
-            }
-            update()
- 
-      
+    const arrTags = tags?.split(",");
+    if (!title || !description || !memory || !time || !difficulty || !tags) {
+      alert("Fill all the details");
+    }
+    console.log(description, title, memory, time, arrTags);
+
+    async function update() {
+      const result = await axios.post(
+        `${BACKEND_URL}/submit/problem`,
+        {
+          title: title,
+          description: description,
+          difficulty: difficulty,
+          tags: arrTags,
+          timeLimit: Number(time),
+          memoryLimit: Number(memory),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      console.log(result.data.problemId);
+      navigate(`/addTestcases/${result.data.problemId}`);
+    }
+    update();
   }
   return (
     <>

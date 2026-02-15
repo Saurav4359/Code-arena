@@ -60,6 +60,7 @@ export function AddTestCases() {
       );
       if (result.data) alert("TestCase Added");
       else alert("TestCase failed to add");
+      window.location.reload();
     }
     addtest();
   }

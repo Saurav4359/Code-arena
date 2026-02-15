@@ -1,11 +1,11 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Layout } from "../pages/Layout";
-import { Section, LoginPage, SignupPage } from "../Components/section";
-import { Problem } from "../Components/Allproblem";
-import { Submission } from "../Components/Submission";
+import { Layout } from "../Components/Layout";
+import { Section, LoginPage, SignupPage } from "../pages/section";
+import { Problem } from "../pages/Allproblem";
+import { Submission } from "../pages/Submission";
 import { Contest } from "../pages/contest";
-import { MySubmission } from "../Components/MySubmissions";
+import { MySubmission } from "../pages/MySubmissions";
 import { AddProblem } from "../pages/AddProblem";
 import { AddTestCases } from "../pages/AddTestCases";
 
@@ -43,6 +43,3 @@ function App() {
 }
 
 export default App;
-
-
- 
