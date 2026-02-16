@@ -88,9 +88,7 @@ export const Signin = async (req: Request, res: Response) => {
       userId: user.id,
       role: user.role,
     });
-
-    await prisma.refreshToken.deleteMany({ where: { userId: user.id } });
-
+    
     res.status(201).json({
       success: true,
       accessToken: accessToken,
