@@ -1,54 +1,24 @@
-import express from "express"
+import express from "express";
 import { runServer } from "./server";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import {
-  getMySubmission,
-  getProblemDescription,
-  getProblemDetails,
-  getServerRunning,
-  hiddenTestcases,
-  Problems,
-  Signin,
-  Signup,
-  submission,
-  visibleTestcases,
-} from "./controller/Controller";
-
-import { AuthMiddleware } from "./Middlewares/AuthMiddleware";
-import { AdminCheck } from "./Middlewares/AdminCheck";
+import SubmitRouter from "./routes/problem.routes";
+import AuthRouter from "./routes/auth.routes";
+import { getServerRunning } from "./controller/GetServerRunning";
+import GetRouter from "./routes/submission.routes";
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ["http://localhost:5174", "http://localhost:5173"] , credentials :true}));
-
-
-const router = express.Router();
-
-app.get("/",getServerRunning);
-app.use("/auth", router);
-router.post("/signup", Signup);
-router.post("/login", Signin);
-
-app.use("/submit", router);
-router.post("/problem", AuthMiddleware, AdminCheck("ADMIN"), Problems);
-router.post(
-  "/visibletestcase/:problemId",
-  AuthMiddleware,
-  AdminCheck("ADMIN"),
-  visibleTestcases,
+app.use(
+  cors({
+    origin: ["http://localhost:5174", "http://localhost:5173"],
+    credentials: true,
+  }),
 );
-router.post(
-  "/hiddentestcase/:problemId",
-  AuthMiddleware,
-  AdminCheck("ADMIN"),
-  hiddenTestcases,
-);
-router.post("/submission/:problemId", AuthMiddleware, submission);
 
-app.use("/get", router);
-router.get("/problems", getProblemDetails);
-router.get("/getProblemDescription/:problemId", getProblemDescription);
-router.get("/getMySubmission",AuthMiddleware, getMySubmission);
+app.get("/", getServerRunning);
+app.use("/auth", AuthRouter);
+app.use("/submit", SubmitRouter);
+app.use("/get", GetRouter);
 runServer(app);
