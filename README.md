@@ -1,6 +1,13 @@
+
 # CodeRift
 
 CodeRift is a full-stack online coding platform for solving programming problems in the browser.
+
+
+
+https://github.com/user-attachments/assets/81090d2d-a02d-4d51-8634-217185de7f78
+
+
 
 ## What it does
 
